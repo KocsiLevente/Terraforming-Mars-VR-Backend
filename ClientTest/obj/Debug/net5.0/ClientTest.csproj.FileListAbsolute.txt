@@ -1,0 +1,32 @@
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.exe
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.deps.json
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.runtimeconfig.json
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.runtimeconfig.dev.json
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.dll
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ref\ClientTest.dll
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.pdb
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.csproj.AssemblyReference.cache
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.AssemblyInfoInputs.cache
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.AssemblyInfo.cs
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.csproj.CoreCompileInputs.cache
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.dll
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ref\ClientTest.dll
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.pdb
+C:\Users\Kocsi Levente\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.genruntimeconfig.cache
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.exe
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.deps.json
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.runtimeconfig.json
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.runtimeconfig.dev.json
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.dll
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ref\ClientTest.dll
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\bin\Debug\net5.0\ClientTest.pdb
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.csproj.AssemblyReference.cache
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.AssemblyInfoInputs.cache
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.AssemblyInfo.cs
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.csproj.CoreCompileInputs.cache
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.dll
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ref\ClientTest.dll
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.pdb
+C:\Users\kocsi\OneDrive\Asztali gép\UnityCreations\Terraforming Mars VR - Dipterv 1\Terraforming Mars Backend\TerraformingMarsBackend\ClientTest\obj\Debug\net5.0\ClientTest.genruntimeconfig.cache
