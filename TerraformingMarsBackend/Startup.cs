@@ -120,6 +120,18 @@ namespace TerraformingMarsBackend
             }
         }
 
+        public async static Task SendJoinGameRoomResultMessage(WebSocket webSocket, bool isSuccess, bool isLeader)
+        {
+            JoinGameRoomResult joinGameRoomResult = new JoinGameRoomResult(isSuccess, isLeader);
+            TerraformingMarsMessage terraformingMarsMessage = new TerraformingMarsMessage(CommunicationType.JoinGameRoomResult, JsonSerializer.Serialize(joinGameRoomResult));
+            string toSend = JsonSerializer.Serialize(terraformingMarsMessage);
+
+            if (webSocket.State == WebSocketState.Open)
+            {
+                await webSocket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(toSend)), WebSocketMessageType.Text, false, CancellationToken.None);
+            }
+        }
+
         public async static Task SendInvitePlayerRequestMessage(WebSocket webSocket, int gameRoom, TerraformingMarsUser user)
         {
             InvitePlayerRequest invitePlayerRequest = new InvitePlayerRequest(gameRoom);
@@ -243,7 +255,7 @@ namespace TerraformingMarsBackend
             catch { }
         }
 
-        public static void HandleJoinGameRoomMessage(TerraformingMarsMessage messageToHandle)
+        public async static void HandleJoinGameRoomMessage(TerraformingMarsMessage messageToHandle)
         {
             //Reading message.
             JoinGameRoom joinGameRoom = (JoinGameRoom)JsonSerializer.Deserialize(messageToHandle.Data, typeof(JoinGameRoom));
@@ -252,10 +264,28 @@ namespace TerraformingMarsBackend
             try
             {
                 TerraformingMarsUser user = GameDataService.GetTerraformingMarsUserByOuterId(Guid.Parse(joinGameRoom.UserId));
-                user.GameRoomId = joinGameRoom.GameRoomId;
 
-                //Updating the user in the Database.
-                GameDataService.UpdateTerraformingMarsUser(user);
+                if (!GameDataService.IsGameRoomFull(joinGameRoom.GameRoomId))
+                {
+                    bool isLeader = false;
+                    user.GameRoomId = joinGameRoom.GameRoomId;
+                    if (GameDataService.GetGameRoomById(joinGameRoom.GameRoomId).JoinedUsers.Count == 0)
+                    {
+                        isLeader = true;
+                        GameDataService.GetGameRoomById(joinGameRoom.GameRoomId).LeaderUserId = user.OuterId;
+                    }
+
+                    //Updating the user in the Database.
+                    GameDataService.UpdateTerraformingMarsUser(user);
+
+                    //Sending back the result.
+                    await SendJoinGameRoomResultMessage(ConnectedWebSockets.SingleOrDefault(ws => ws.Key == user.Id).Value, true, isLeader);
+                }
+                else
+                {
+                    //Sending back the result.
+                    await SendJoinGameRoomResultMessage(ConnectedWebSockets.SingleOrDefault(ws => ws.Key == user.Id).Value, false, false);
+                }
             }
             catch { }
         }
@@ -270,6 +300,72 @@ namespace TerraformingMarsBackend
 
             //Send the request message to the given player.
             await SendInvitePlayerRequestMessage(ConnectedWebSockets.SingleOrDefault(ws => ws.Key == user.Id).Value, invitePlayer.GameRoom, user);
+        }
+
+        public async static Task HandleLeaveGameRoomMessage(TerraformingMarsMessage messageToHandle)
+        {
+            //Reading message.
+            LeaveGameRoom leaveGameRoom = (LeaveGameRoom)JsonSerializer.Deserialize(messageToHandle.Data, typeof(LeaveGameRoom));
+
+            //Searching for the user and room.
+            TerraformingMarsUser user = GameDataService.GetTerraformingMarsUserByOuterId(Guid.Parse(leaveGameRoom.UserId));
+            user.GameRoomId = -1;
+            GameRoom room = GameDataService.GetGameRoomById(leaveGameRoom.GameRoomId);
+            if (room.LeaderUserId == user.OuterId)
+            {
+                var users = GameDataService.GetUsersByGameRoomId(leaveGameRoom.GameRoomId);
+                if (users != null && users.Count > 0)
+                {
+                    room.LeaderUserId = users[0].OuterId;
+                    //Send message to the new leader.
+                    await SendJoinGameRoomResultMessage(ConnectedWebSockets.SingleOrDefault(ws => ws.Key == user.Id).Value, true, true);
+                }
+            }
+
+            //Updating the user in the Database.
+            GameDataService.UpdateTerraformingMarsUser(user);
+        }
+
+        public async static Task HandleStartGameMessage(WebSocket webSocket, TerraformingMarsMessage messageToHandle)
+        {
+            //Insert a game into the Database.
+            StartGameMessage startGame = (StartGameMessage)JsonSerializer.Deserialize(messageToHandle.Data, typeof(StartGameMessage));
+            Game insertedGame = GameDatabaseService.InsertGame(startGame.Difficulty);
+
+            //Start to manage the game in the background.
+            if (!string.IsNullOrEmpty(startGame.FirstUser))
+            {
+                TerraformingMarsUser user = GameDataService.GetTerraformingMarsUserByOuterId(Guid.Parse(startGame.FirstUser));
+                Resource cost;
+                switch (insertedGame.Difficulty)
+                {
+                    case 1:
+                        cost = new Resource(40, 0, 0, 0, 0, 0);
+                        break;
+                    case 2:
+                        cost = new Resource(30, 0, 0, 0, 0, 0);
+                        break;
+                    case 3:
+                        cost = new Resource(25, 0, 0, 0, 0, 0);
+                        break;
+                    default:
+                        cost = new Resource(40, 0, 0, 0, 0, 0);
+                        break;
+                }
+                Player player = new Player($"Player {startGame.FirstUser}", cost);
+                user.PlayerId = GameDataService.InsertPlayer(player);
+                GameDataService.UpdateTerraformingMarsUser(user);
+            }
+            for (int i = 0; i < 180; i++)
+            {
+                insertedGame.GameBoard.Add(new Hexagon(i + 1, null));
+            }
+            insertedGame.LastHostedTime = DateTime.Now;
+            ConnectedWebSockets.Add(new KeyValuePair<int, WebSocket>(insertedGame.Id, webSocket));
+            GameManagementService.GamesToManage.Add(insertedGame);
+
+            //Send the result message.
+            await SendStartGameResultMessage(webSocket, insertedGame);
         }
 
         public async static Task ReceiveMessage(WebSocket webSocket)
@@ -307,75 +403,11 @@ namespace TerraformingMarsBackend
                             case CommunicationType.InvitePlayer:
                                 await HandleInvitePlayerMessage(messageToHandle);
                                 break;
+                            case CommunicationType.LeaveGameRoom:
+                                await HandleLeaveGameRoomMessage(messageToHandle);
+                                break;
                             case CommunicationType.StartGame:
-                                //Insert a game into the Database.
-                                StartGameMessage startGame = (StartGameMessage)JsonSerializer.Deserialize(messageToHandle.Data, typeof(StartGameMessage));
-                                Game insertedGame = GameDatabaseService.InsertGame(startGame.Difficulty);
-
-                                //Start to manage the game in the background.
-                                if (!string.IsNullOrEmpty(startGame.FirstUser))
-                                {
-                                    /*
-                                    TerraformingMarsUser userToAdd; // = new TerraformingMarsUser();
-                                    userToAdd.OuterId = Guid.Parse(startGame.FirstUser);
-                                    Resource cost;
-                                    switch (insertedGame.Difficulty)
-                                    {
-                                        case 1:
-                                            cost = new Resource(40, 0, 0, 0, 0, 0);
-                                            break;
-                                        case 2:
-                                            cost = new Resource(30, 0, 0, 0, 0, 0);
-                                            break;
-                                        case 3:
-                                            cost = new Resource(25, 0, 0, 0, 0, 0);
-                                            break;
-                                        default:
-                                            cost = new Resource(40, 0, 0, 0, 0, 0);
-                                            break;
-                                    }
-                                    Player player = new Player($"Player {startGame.FirstUser}", cost);
-                                    //userToAdd.Player 
-                                    GameDatabaseService.InsertPlayer(userToAdd.Player, Guid.Parse(startGame.FirstUser), insertedGame.Id);
-                                    //insertedGame.Users.Add(userToAdd);
-                                     */
-                                }
-                                if (!string.IsNullOrEmpty(startGame.SecondUser))
-                                {
-                                    /*
-                                    TerraformingMarsUser userToAdd = new TerraformingMarsUser();
-                                    userToAdd.OuterId = Guid.Parse(startGame.SecondUser);
-                                    Resource cost;
-                                    switch (insertedGame.Difficulty)
-                                    {
-                                        case 1:
-                                            cost = new Resource(40, 0, 0, 0, 0, 0);
-                                            break;
-                                        case 2:
-                                            cost = new Resource(30, 0, 0, 0, 0, 0);
-                                            break;
-                                        case 3:
-                                            cost = new Resource(25, 0, 0, 0, 0, 0);
-                                            break;
-                                        default:
-                                            cost = new Resource(40, 0, 0, 0, 0, 0);
-                                            break;
-                                    }
-                                    userToAdd.Player = new Player($"Player {startGame.SecondUser}", cost);
-                                    GameDatabaseService.InsertPlayer(userToAdd.Player, Guid.Parse(startGame.SecondUser), insertedGame.Id);
-                                    insertedGame.Users.Add(userToAdd);
-                                     */
-                                }
-                                for (int i = 0; i < 180; i++)
-                                {
-                                    insertedGame.GameBoard.Add(new Hexagon(i + 1, null));
-                                }
-                                insertedGame.LastHostedTime = DateTime.Now;
-                                ConnectedWebSockets.Add(new KeyValuePair<int, WebSocket>(insertedGame.Id, webSocket));
-                                GameManagementService.GamesToManage.Add(insertedGame);
-
-                                //Send the result message.
-                                await SendStartGameResultMessage(webSocket, insertedGame);
+                                await HandleStartGameMessage(webSocket, messageToHandle);
                                 break;
                             case CommunicationType.GetGameState:
                                 //Get the game from the Database.

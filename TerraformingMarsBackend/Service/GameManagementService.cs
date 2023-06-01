@@ -62,7 +62,7 @@ namespace TerraformingMarsBackend.Service
                                     foreach (TerraformingMarsUser user in game.GameRoom.JoinedUsers)
                                     {
                                         user.Player.Bank.Add(user.Player.Incomes);
-                                        GameDatabaseService.UpdatePlayerById(user, game.Id);
+                                        GameDatabaseService.UpdatePlayerById(user.Player);
                                     }
                                 }
                             }

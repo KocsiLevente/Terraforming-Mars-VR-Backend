@@ -73,6 +73,32 @@ namespace TerraformingMarsBackend.Models
         }
     }
 
+    //Server sends, client receives.
+    public class JoinGameRoomResult : MessageData
+    {
+        public bool IsSuccess { get; set; }
+        public bool IsLeader { get; set; }
+
+        public JoinGameRoomResult(bool isSuccess, bool isLeader)
+        {
+            IsSuccess = isSuccess;
+            IsLeader = isLeader;
+        }
+    }
+
+    //Client sends, Server receives.
+    public class LeaveGameRoom : MessageData
+    {
+        public string UserId { get; set; }
+        public int GameRoomId { get; set; }
+
+        public LeaveGameRoom(string userId, int gameRoomId)
+        {
+            UserId = userId;
+            GameRoomId = gameRoomId;
+        }
+    }
+
     //Client sends, Server receives.
     public class SendChatMessage : MessageData
     {
@@ -124,16 +150,29 @@ namespace TerraformingMarsBackend.Models
     }
 
     //Client sends, Server receives.
+    public class KickPlayer : MessageData
+    {
+        public string User { get; set; }
+        public string UserToKick { get; set; }
+        public int GameRoom { get; set; }
+
+        public KickPlayer(string user, string userToKick, int gameRoom)
+        {
+            User = user;
+            UserToKick = userToKick;
+            GameRoom = gameRoom;
+        }
+    }
+
+    //Client sends, Server receives.
     public class StartGameMessage : MessageData
     {
         public string FirstUser { get; set; }
-        public string SecondUser { get; set; }
         public int Difficulty { get; set; } = 1;
 
-        public StartGameMessage(string firstUser, string secondUser, int difficulty = 1)
+        public StartGameMessage(string firstUser, int difficulty = 1)
         {
             FirstUser = firstUser;
-            SecondUser = secondUser;
             Difficulty = difficulty;
         }
     }
@@ -220,7 +259,9 @@ namespace TerraformingMarsBackend.Models
     public enum CommunicationType
     {
         JoinMultiplayerLobby, JoinMultiplayerLobbyResult,
-        SendChatMessage, CreateGameRoom, JoinGameRoom, LeaveGameRoom,
+        SendChatMessage, CreateGameRoom,
+        JoinGameRoom, JoinGameRoomResult,
+        LeaveGameRoom,
         InvitePlayer, InvitePlayerRequest, InvitePlayerResult, KickPlayer,
         StartGame, StartGameResult,
         GetGameState, GetGameStateResult,

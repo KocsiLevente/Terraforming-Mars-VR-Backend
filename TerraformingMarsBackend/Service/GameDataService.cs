@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
 using TerraformingMarsBackend.Models;
 
 namespace TerraformingMarsBackend.Service
@@ -89,7 +88,7 @@ namespace TerraformingMarsBackend.Service
 
         public static bool IsGameRoomFull(int gameRoomId)
         {
-            return Users.Count(u => u.GameRoomId == gameRoomId) < 5;
+            return Users.Count(u => u.GameRoomId == gameRoomId) >= 5;
         }
 
         public static int InsertGameRoom(GameRoom gameRoom)
@@ -148,6 +147,11 @@ namespace TerraformingMarsBackend.Service
         }
 
         //Player data handling.
+        public static int InsertPlayer(Player player)
+        {
+            return GameDatabaseService.InsertPlayer(player);
+        }
+
         public static Player GetPlayerById(int playerId)
         {
             return Players.SingleOrDefault(p => p.Id == playerId);

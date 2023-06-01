@@ -246,7 +246,8 @@ namespace TerraformingMarsBackend.Service
 
         public static Game InsertGame(int difficulty)
         {
-            /*
+            Game game = new Game();
+
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -280,16 +281,12 @@ namespace TerraformingMarsBackend.Service
                 res.Close();
             }
             con.Close();
-             */
-
-            Game game = new Game();
 
             return game;
         }
 
         public static int UpdateGameById(Game game)
         {
-            /*
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -316,7 +313,6 @@ namespace TerraformingMarsBackend.Service
                 res.Close();
             }
             con.Close();
-             */
 
             return game.Id;
         }
@@ -325,7 +321,6 @@ namespace TerraformingMarsBackend.Service
         {
             List<Game> game = new List<Game>();
 
-            /*
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -366,7 +361,6 @@ namespace TerraformingMarsBackend.Service
                 res.Close();
             }
             con.Close();
-             */
 
             return game;
         }
@@ -375,7 +369,6 @@ namespace TerraformingMarsBackend.Service
         {
             int buildingId = -1;
 
-            /*
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -398,16 +391,12 @@ namespace TerraformingMarsBackend.Service
                 res.Close();
             }
             con.Close();
-             */
 
             return buildingId;
         }
 
-        public static TerraformingMarsUser InsertPlayer(Player player, Guid userId, int gameId)
+        public static int InsertPlayer(Player player)
         {
-            TerraformingMarsUser tmPlayer = null; // = new TerraformingMarsUser();
-
-            /*
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -416,8 +405,6 @@ namespace TerraformingMarsBackend.Service
             using (SqlCommand cmd = new SqlCommand("insert_player", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@user_id", SqlDbType.NVarChar).Value = userId.ToString();
-                cmd.Parameters.Add("@game_id", SqlDbType.Int).Value = gameId;
                 cmd.Parameters.Add("@bank_credit", SqlDbType.Int).Value = player.Bank.Credit;
                 cmd.Parameters.Add("@bank_metal", SqlDbType.Int).Value = player.Bank.Metal;
                 cmd.Parameters.Add("@bank_titan", SqlDbType.Int).Value = player.Bank.Titan;
@@ -441,16 +428,11 @@ namespace TerraformingMarsBackend.Service
             }
             con.Close();
 
-            tmPlayer.UserId = userId;
-            tmPlayer.Player = player;
-             */
-
-            return tmPlayer;
+            return player.Id;
         }
 
-        public static int UpdatePlayerById(TerraformingMarsUser tmPlayer, int gameId)
+        public static int UpdatePlayerById(Player player)
         {
-            /*
             SqlConnection con = null;
             SqlDataReader res = null;
 
@@ -459,34 +441,31 @@ namespace TerraformingMarsBackend.Service
             using (SqlCommand cmd = new SqlCommand("update_player_by_id", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@id", SqlDbType.Int).Value = tmPlayer.Player.Id;
-                cmd.Parameters.Add("@user_id", SqlDbType.NVarChar).Value = tmPlayer.UserId.ToString();
-                cmd.Parameters.Add("@game_id", SqlDbType.Int).Value = gameId;
-                cmd.Parameters.Add("@bank_credit", SqlDbType.Int).Value = tmPlayer.Player.Bank.Credit;
-                cmd.Parameters.Add("@bank_metal", SqlDbType.Int).Value = tmPlayer.Player.Bank.Metal;
-                cmd.Parameters.Add("@bank_titan", SqlDbType.Int).Value = tmPlayer.Player.Bank.Titan;
-                cmd.Parameters.Add("@bank_plant", SqlDbType.Int).Value = tmPlayer.Player.Bank.Plant;
-                cmd.Parameters.Add("@bank_energy", SqlDbType.Int).Value = tmPlayer.Player.Bank.Energy;
-                cmd.Parameters.Add("@bank_heat", SqlDbType.Int).Value = tmPlayer.Player.Bank.Heat;
-                cmd.Parameters.Add("@income_credit", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Credit;
-                cmd.Parameters.Add("@income_metal", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Metal;
-                cmd.Parameters.Add("@income_titan", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Titan;
-                cmd.Parameters.Add("@income_plant", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Plant;
-                cmd.Parameters.Add("@income_energy", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Energy;
-                cmd.Parameters.Add("@income_heat", SqlDbType.Int).Value = tmPlayer.Player.Incomes.Heat;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = player.Id;
+                cmd.Parameters.Add("@bank_credit", SqlDbType.Int).Value = player.Bank.Credit;
+                cmd.Parameters.Add("@bank_metal", SqlDbType.Int).Value = player.Bank.Metal;
+                cmd.Parameters.Add("@bank_titan", SqlDbType.Int).Value = player.Bank.Titan;
+                cmd.Parameters.Add("@bank_plant", SqlDbType.Int).Value = player.Bank.Plant;
+                cmd.Parameters.Add("@bank_energy", SqlDbType.Int).Value = player.Bank.Energy;
+                cmd.Parameters.Add("@bank_heat", SqlDbType.Int).Value = player.Bank.Heat;
+                cmd.Parameters.Add("@income_credit", SqlDbType.Int).Value = player.Incomes.Credit;
+                cmd.Parameters.Add("@income_metal", SqlDbType.Int).Value = player.Incomes.Metal;
+                cmd.Parameters.Add("@income_titan", SqlDbType.Int).Value = player.Incomes.Titan;
+                cmd.Parameters.Add("@income_plant", SqlDbType.Int).Value = player.Incomes.Plant;
+                cmd.Parameters.Add("@income_energy", SqlDbType.Int).Value = player.Incomes.Energy;
+                cmd.Parameters.Add("@income_heat", SqlDbType.Int).Value = player.Incomes.Heat;
 
                 res = cmd.ExecuteReader();
 
                 while (res.Read())
                 {
-                    tmPlayer.Player.Id = res.GetInt32(0);
+                    player.Id = res.GetInt32(0);
                 }
                 res.Close();
             }
             con.Close();
-             */
 
-            return tmPlayer.Player.Id;
+            return player.Id;
         }
     }
 }
